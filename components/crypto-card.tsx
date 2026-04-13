@@ -14,7 +14,7 @@ export function CryptoCard({ coin }: CryptoCardProps) {
   const priceChange = coin.price_change_percentage_24h ?? 0;
   const isPositive = priceChange >= 0;
   const changeColor = isPositive ? 'text-green-500' : 'text-red-500';
-  const changeIcon = isPositive ? <ArrowUp className="h-3 w-3" /> : <ArrowDown className="h-3 w-3" />;
+  const changeIcon = isPositive ? <ArrowUp className="h-3 w-3 shrink-0" /> : <ArrowDown className="h-3 w-3 shrink-0" />;
   const changeSign = isPositive ? '+' : '';
 
   return (
@@ -23,30 +23,34 @@ export function CryptoCard({ coin }: CryptoCardProps) {
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ scale: 1.02, y: -2 }}
       transition={{ duration: 0.2 }}
+      className="h-full"
     >
-      <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-        <CardContent className="p-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+      <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full overflow-hidden">
+        <CardContent className="p-3 sm:p-4">
+          <div className="flex items-center justify-between gap-2 w-full">
+            {/* Kiri: Logo + Nama */}
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
               <Image
                 src={coin.image}
                 alt={coin.name}
-                width={32}
-                height={32}
-                className="rounded-full"
+                width={28}
+                height={28}
+                className="rounded-full sm:w-8 sm:h-8 shrink-0"
               />
-              <div>
-                <p className="font-semibold text-sm">{coin.name}</p>
-                <p className="text-xs text-muted-foreground uppercase">
+              <div className="min-w-0 flex-1">
+                <p className="font-semibold text-xs sm:text-sm truncate">{coin.name}</p>
+                <p className="text-[10px] sm:text-xs text-muted-foreground uppercase truncate">
                   {coin.symbol}
                 </p>
               </div>
             </div>
-            <div className="text-right">
-              <p className="font-bold text-sm">
+
+            {/* Kanan: Harga + Perubahan */}
+            <div className="text-right shrink-0">
+              <p className="font-bold text-xs sm:text-sm whitespace-nowrap">
                 ${coin.current_price?.toLocaleString()}
               </p>
-              <p className={`text-xs font-medium ${changeColor} flex items-center gap-0.5 justify-end`}>
+              <p className={`text-[10px] sm:text-xs font-medium ${changeColor} flex items-center gap-0.5 justify-end whitespace-nowrap`}>
                 {changeIcon}
                 {changeSign}{priceChange.toFixed(2)}%
               </p>
