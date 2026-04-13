@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Navbar } from '@/components/navbar';
-import { Toaster } from 'sonner';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export const metadata: Metadata = {
   title: 'Crypto Tracker',
@@ -16,8 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="min-h-screen bg-background text-foreground antialiased font-poppins">
-        <Toaster position="top-right" richColors />
+      <body className="min-h-screen bg-background text-foreground antialiased">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -26,6 +25,7 @@ export default function RootLayout({
         >
           <Navbar />
           <main className="container mx-auto px-4 py-6">{children}</main>
+          <SpeedInsights />
         </ThemeProvider>
       </body>
     </html>
