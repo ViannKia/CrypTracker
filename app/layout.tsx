@@ -3,6 +3,7 @@ import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Navbar } from '@/components/navbar';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { Toaster } from 'sonner';
 
 export const metadata: Metadata = {
   title: 'Crypto Tracker',
@@ -17,6 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen bg-background text-foreground antialiased">
+        <Toaster position="top-right" richColors />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

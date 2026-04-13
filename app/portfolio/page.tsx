@@ -143,7 +143,7 @@ export default function PortfolioPage() {
     setAmount('');
     setBuyPrice('');
     setShowForm(false);
-    
+
     toast.success(`${coinName} berhasil ditambahkan!`);
   };
 
@@ -266,80 +266,88 @@ export default function PortfolioPage() {
 
       {/* Portfolio Table */}
       {entries.length === 0 ? (
-  <Card>
-    <CardContent className="p-12 text-center text-muted-foreground">
-      Belum ada aset. Klik "Add New Asset" untuk memulai.
-    </CardContent>
-  </Card>
-) : (
-  <div className="border rounded-lg overflow-hidden">
-    <div className="overflow-x-auto">
-      <table className="w-full text-sm">
-        <thead className="bg-muted">
-          <tr className="border-b">
-            <th className="text-center p-3">Asset</th>
-            <th className="text-center p-3">Amount</th>
-            <th className="text-center p-3">Buy Price</th>
-            <th className="text-center p-3">Current</th>
-            <th className="text-center p-3">P&L</th>
-            <th className="text-center p-3">Action</th>
-           </tr>
-        </thead>
-        <tbody>
-          {entries.map((entry) => {
-            const isProfit = entry.pnlUsd >= 0;
-            return (
-              <tr key={entry.id} className="border-b hover:bg-muted/50">
-                <td className="text-center p-3">
-                  <div>
-                    <p className="font-medium">{entry.coinName}</p>
-                    <p className="text-xs text-muted-foreground">{entry.coinSymbol}</p>
-                  </div>
-                </td>
-                <td className="text-center p-3">
-                  {entry.amount} {entry.coinSymbol}
-                </td>
-                <td className="text-center p-3">${entry.buyPrice.toLocaleString()}</td>
-                <td className="text-center p-3">${entry.currentPrice.toLocaleString()}</td>
-                <td className={`text-center p-3 ${isProfit ? 'text-green-500' : 'text-red-500'}`}>
-                  {isProfit ? <TrendingUp className="inline h-3 w-3 mr-1" /> : <TrendingDown className="inline h-3 w-3 mr-1" />}
-                  ${Math.abs(entry.pnlUsd).toLocaleString()} ({isProfit ? '+' : ''}{entry.pnlPercent.toFixed(2)}%)
-                </td>
-                <td className="text-center p-3">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {
-                      toast.custom((t) => (
-                        <div className="bg-background border rounded-lg shadow-lg p-4 flex gap-3 items-center">
-                          <span>Hapus {entry.coinName} dari portfolio?</span>
-                          <Button size="sm" variant="outline" onClick={() => {
-                            removePortfolioEntry(entry.id);
-                            loadPortfolio();
-                            toast.dismiss(t);
-                            toast.success(`${entry.coinName} berhasil dihapus`);
-                          }}>
-                            Ya
-                          </Button>
-                          <Button size="sm" variant="ghost" onClick={() => toast.dismiss(t)}>
-                            Batal
-                          </Button>
+        <Card>
+          <CardContent className="p-12 text-center text-muted-foreground">
+            Belum ada aset. Klik "Add New Asset" untuk memulai.
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="border rounded-lg overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead className="bg-muted">
+                <tr className="border-b">
+                  <th className="text-center p-3">Asset</th>
+                  <th className="text-center p-3">Amount</th>
+                  <th className="text-center p-3">Buy Price</th>
+                  <th className="text-center p-3">Current</th>
+                  <th className="text-center p-3">P&L</th>
+                  <th className="text-center p-3">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {entries.map((entry) => {
+                  const isProfit = entry.pnlUsd >= 0;
+                  return (
+                    <tr key={entry.id} className="border-b hover:bg-muted/50">
+                      <td className="text-center p-3">
+                        <div>
+                          <p className="font-medium">{entry.coinName}</p>
+                          <p className="text-xs text-muted-foreground">{entry.coinSymbol}</p>
                         </div>
-                      ));
-                    }}
-                    className="h-8 w-8 p-0"
-                  >
-                    <Trash2 className="h-4 w-4 text-red-500" />
-                  </Button>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
-  </div>
-)}
+                      </td>
+                      <td className="text-center p-3">
+                        {entry.amount} {entry.coinSymbol}
+                      </td>
+                      <td className="text-center p-3">${entry.buyPrice.toLocaleString()}</td>
+                      <td className="text-center p-3">${entry.currentPrice.toLocaleString()}</td>
+                      <td className={`text-center p-3 ${isProfit ? 'text-green-500' : 'text-red-500'}`}>
+                        {isProfit ? <TrendingUp className="inline h-3 w-3 mr-1" /> : <TrendingDown className="inline h-3 w-3 mr-1" />}
+                        ${Math.abs(entry.pnlUsd).toLocaleString()} ({isProfit ? '+' : ''}{entry.pnlPercent.toFixed(2)}%)
+                      </td>
+                      <td className="text-center p-3">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => {
+                            toast.custom((t) => (
+                              <div className="bg-background border rounded-lg shadow-lg p-4 flex gap-3 items-center">
+                                <span>Hapus {entry.coinName} dari portfolio?</span>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => {
+                                    removePortfolioEntry(entry.id);
+                                    loadPortfolio();
+                                    toast.dismiss(t);
+                                    toast.success(`${entry.coinName} berhasil dihapus`);
+                                  }}
+                                >
+                                  Ya
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="ghost"
+                                  onClick={() => toast.dismiss(t)}
+                                >
+                                  Batal
+                                </Button>
+                              </div>
+                            ));
+                          }}
+                          className="h-8 w-8 p-0"
+                        >
+                          <Trash2 className="h-4 w-4 text-red-500" />
+                        </Button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
