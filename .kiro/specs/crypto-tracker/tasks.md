@@ -40,7 +40,7 @@ Implementasi dilakukan secara inkremental: mulai dari fondasi proyek (types, lib
     - **Validates: Requirements 3.2, 3.4**
     - Gunakan `fc.array(fc.record({...CoinMarket}))` + `fc.string()`
 
-- [-] 2. Setup layout, ThemeProvider, dan Navbar
+- [x] 2. Setup layout, ThemeProvider, dan Navbar
   - Install dependency: `next-themes`, `shadcn/ui` (init), `recharts`
   - Buat `components/theme-provider.tsx` sebagai wrapper `next-themes`
   - Buat `app/layout.tsx` dengan `ThemeProvider` menggunakan `defaultTheme="system"` dan `enableSystem`
@@ -58,7 +58,7 @@ Implementasi dilakukan secara inkremental: mulai dari fondasi proyek (types, lib
     - **Validates: Requirements 4.4**
     - Gunakan `fc.constantFrom("light", "dark")`
 
-- [ ] 3. Implementasi komponen Dashboard — CryptoCard dan MiniChart
+- [x] 3. Implementasi komponen Dashboard — CryptoCard dan MiniChart
   - Buat `components/mini-chart.tsx` sebagai Client Component menggunakan Recharts `LineChart` tanpa `XAxis`, `YAxis`, `CartesianGrid`, dan `Tooltip`; warna garis hijau/merah berdasarkan prop `isPositive`
   - Buat `components/skeleton-card.tsx` sebagai skeleton loading untuk CryptoCard
   - Buat `components/crypto-card.tsx` yang menampilkan nama, simbol, harga USD, persentase 24h (hijau/merah), dan `MiniChart`
@@ -88,7 +88,7 @@ Implementasi dilakukan secara inkremental: mulai dari fondasi proyek (types, lib
     - Verifikasi skeleton loading ditampilkan saat data sedang diambil (Req 1.5)
     - Verifikasi pesan error ditampilkan saat API gagal (Req 1.6)
 
-- [ ] 4. Implementasi CryptoCardGrid dengan SearchBar
+- [x] 4. Implementasi CryptoCardGrid dengan SearchBar
   - Buat `components/crypto-card-grid.tsx` sebagai Client Component yang menerima `coins: CoinMarket[]`
   - Tambahkan `SearchBar` (input teks) di bagian atas grid yang memfilter koin secara real-time menggunakan `filterCoins()`
   - Tampilkan pesan "Tidak ada hasil untuk pencarian ini." ketika hasil filter kosong
@@ -99,7 +99,7 @@ Implementasi dilakukan secara inkremental: mulai dari fondasi proyek (types, lib
     - Verifikasi SearchBar ada di halaman Dashboard (Req 3.1)
     - Verifikasi pesan "Tidak ada hasil" ditampilkan saat pencarian tidak cocok (Req 3.3)
 
-- [ ] 5. Implementasi halaman Dashboard (Server Component)
+- [x] 5. Implementasi halaman Dashboard (Server Component)
   - Buat `app/page.tsx` sebagai Server Component (tanpa `"use client"`)
   - Panggil `fetchTopCoins()` di dalam komponen dan teruskan hasilnya ke `CryptoCardGrid`
   - Buat `app/error.tsx` sebagai error boundary untuk menangkap error dari Server Component
@@ -110,16 +110,16 @@ Implementasi dilakukan secara inkremental: mulai dari fondasi proyek (types, lib
     - Verifikasi `app/page.tsx` tidak memiliki `"use client"` directive (Req 7.1)
     - Verifikasi `fetchTopCoins` menggunakan `{ next: { revalidate: 60 } }` (Req 7.2)
 
-- [ ] 6. Checkpoint — Pastikan semua tests pass
+- [x] 6. Checkpoint — Pastikan semua tests pass
   - Pastikan semua tests pass, tanyakan kepada user jika ada pertanyaan.
 
-- [ ] 7. Implementasi Route Handler untuk harga portfolio
+- [x] 7. Implementasi Route Handler untuk harga portfolio
   - Buat `app/api/prices/route.ts` yang menerima query param `ids` dan memanggil `fetchCoinPrices()`
   - Kembalikan response JSON berupa `Record<string, number>` (coinId → harga USD)
   - Tangani error fetch dengan response HTTP yang sesuai
   - _Requirements: 5.4_
 
-- [ ] 8. Implementasi halaman Portfolio Simulator
+- [x] 8. Implementasi halaman Portfolio Simulator
   - Buat `app/portfolio/page.tsx` sebagai Client Component
   - Saat mount, baca `portfolioEntries` dari localStorage menggunakan `getPortfolioEntries()`
   - Fetch harga terkini dari `/api/prices` untuk semua coinId di portofolio
@@ -129,7 +129,7 @@ Implementasi dilakukan secara inkremental: mulai dari fondasi proyek (types, lib
   - Tangani error fetch harga dengan state `priceError` (Req 5.4)
   - _Requirements: 5.1, 5.3, 5.4, 5.5, 5.6, 5.8_
 
-- [ ] 9. Implementasi komponen PortfolioTable dan AddEntryForm
+- [x] 9. Implementasi komponen PortfolioTable dan AddEntryForm
   - Buat `components/portfolio-table.tsx` yang menerima `entries: PortfolioEntryWithPnL[]` dan `onDelete: (id: string) => void`; tampilkan nama koin, jumlah, harga beli, nilai saat ini, P&L USD, dan P&L persen dengan warna hijau/merah
   - Buat `components/add-entry-form.tsx` dengan field coinId, coinName, coinSymbol, amount, dan buyPrice; saat submit panggil `addPortfolioEntry()` dan perbarui state
   - Hubungkan `AddEntryForm` dan `PortfolioTable` ke halaman Portfolio
@@ -140,7 +140,7 @@ Implementasi dilakukan secara inkremental: mulai dari fondasi proyek (types, lib
     - Verifikasi halaman Portfolio dapat diakses (Req 5.1)
     - Verifikasi pesan error LocalStorage tidak tersedia (Req 5.8)
 
-- [ ] 10. Responsivitas dan polish UI
+- [-] 10. Responsivitas dan polish UI
   - Pastikan layout Dashboard menggunakan grid responsif: 1 kolom (mobile ≥320px), 2 kolom (tablet ≥768px), 4 kolom (desktop ≥1024px) dengan Tailwind CSS
   - Pastikan halaman Portfolio responsif di semua breakpoint
   - Pastikan Navbar responsif dan dapat digunakan di mobile
