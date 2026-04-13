@@ -94,39 +94,17 @@ export function CryptoCardGrid({ coins }: CryptoCardGridProps) {
         open={modalOpen}
         onOpenChange={setModalOpen}
         onAddToPortfolio={(coin) => {
-          // Ambil data portfolio yang sudah ada
-          const existing = JSON.parse(localStorage.getItem('crypto-tracker-portfolio') || '[]');
+          // Simpan data coin ke sessionStorage
+          sessionStorage.setItem('pendingCoin', JSON.stringify({
+            coinId: coin.id,
+            coinName: coin.name,
+            coinSymbol: coin.symbol.toUpperCase(),
+            buyPrice: coin.current_price
+          }));
 
-          // Cek apakah coin sudah ada di portfolio
-          const exists = existing.some((item: any) => item.coinId === coin.id);
-
-          if (exists) {
-            alert(`${coin.name} sudah ada di portfolio!`);
-            setModalOpen(false);
-            return;
-          }
-
-          // Tanya jumlah yang ingin dibeli
-          const amount = prompt(`Berapa banyak ${coin.name} yang ingin Anda beli?`, '1');
-
-          if (amount && !isNaN(Number(amount)) && Number(amount) > 0) {
-            const newEntry = {
-              id: crypto.randomUUID(),
-              coinId: coin.id,
-              coinName: coin.name,
-              coinSymbol: coin.symbol.toUpperCase(),
-              amount: Number(amount),
-              buyPrice: coin.current_price,
-            };
-
-            existing.push(newEntry);
-            localStorage.setItem('crypto-tracker-portfolio', JSON.stringify(existing));
-
-            alert(`${coin.name} berhasil ditambahkan ke portfolio!`);
-            setModalOpen(false);
-          } else if (amount !== null) {
-            alert('Jumlah tidak valid!');
-          }
+          // Redirect ke halaman portfolio
+          window.location.href = '/portfolio';
+          setModalOpen(false);
         }}
       />
     </div>
