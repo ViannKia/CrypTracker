@@ -67,6 +67,9 @@ export default function PortfolioPage() {
       setBuyPrice(coin.buyPrice.toString());
       setShowForm(true);
       sessionStorage.removeItem('pendingCoin');
+      toast.info(`Tambahkan ${coin.coinName} ke portfolio`, {
+        duration: 3000,
+      });
     }
   }, []);
 
@@ -140,8 +143,8 @@ export default function PortfolioPage() {
     setAmount('');
     setBuyPrice('');
     setShowForm(false);
-
-    toast.success(`${coinName} berhasil ditambahkan ke portfolio!`);
+    
+    toast.success(`${coinName} berhasil ditambahkan!`);
   };
 
   const deleteEntry = (id: string, coinName: string) => {
