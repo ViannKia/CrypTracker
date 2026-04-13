@@ -140,14 +140,14 @@ Implementasi dilakukan secara inkremental: mulai dari fondasi proyek (types, lib
     - Verifikasi halaman Portfolio dapat diakses (Req 5.1)
     - Verifikasi pesan error LocalStorage tidak tersedia (Req 5.8)
 
-- [-] 10. Responsivitas dan polish UI
+- [x] 10. Responsivitas dan polish UI
   - Pastikan layout Dashboard menggunakan grid responsif: 1 kolom (mobile ≥320px), 2 kolom (tablet ≥768px), 4 kolom (desktop ≥1024px) dengan Tailwind CSS
   - Pastikan halaman Portfolio responsif di semua breakpoint
   - Pastikan Navbar responsif dan dapat digunakan di mobile
   - Terapkan dark mode variant (`dark:`) pada semua komponen menggunakan Tailwind CSS
   - _Requirements: 7.3, 4.2, 4.3_
 
-- [ ] 11. Checkpoint akhir — Pastikan semua tests pass
+- [x] 11. Checkpoint akhir — Pastikan semua tests pass
   - Pastikan semua tests pass, tanyakan kepada user jika ada pertanyaan.
 
 ## Notes

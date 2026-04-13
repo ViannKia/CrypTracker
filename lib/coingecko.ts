@@ -1,4 +1,3 @@
-import { cacheLife } from 'next/cache';
 import type { CoinMarket } from './types';
 
 const BASE_URL = 'https://api.coingecko.com/api/v3';
@@ -8,8 +7,8 @@ const BASE_URL = 'https://api.coingecko.com/api/v3';
  * Cached with 'use cache' + cacheLife('minutes') (~60s revalidation).
  */
 export async function fetchTopCoins(): Promise<CoinMarket[]> {
-  'use cache';
-  cacheLife('minutes');
+  // 'use cache';
+  // cacheLife('minutes');
 
   const url =
     `${BASE_URL}/coins/markets` +

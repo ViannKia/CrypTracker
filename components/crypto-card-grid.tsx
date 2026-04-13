@@ -1,11 +1,28 @@
 'use client';
 
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { CryptoCard } from '@/components/crypto-card';
+import { CoinDetailModal } from '@/components/coin-detail-modal';
 import { filterCoins } from '@/lib/coingecko';
 import type { CoinMarket } from '@/lib/types';
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.05,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
 
 interface CryptoCardGridProps {
   coins: CoinMarket[];
@@ -13,12 +30,24 @@ interface CryptoCardGridProps {
 
 export function CryptoCardGrid({ coins }: CryptoCardGridProps) {
   const [query, setQuery] = useState('');
+  const [selectedCoin, setSelectedCoin] = useState<CoinMarket | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
+
   const filtered = filterCoins(coins, query);
+
+  const handleCardClick = (coin: CoinMarket) => {
+    setSelectedCoin(coin);
+    setModalOpen(true);
+  };
 
   return (
     <div>
-      {/* Search bar */}
-      <div className="relative mb-6">
+      {/* Search bar with animation */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="relative mb-6"
+      >
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           type="search"
@@ -28,20 +57,78 @@ export function CryptoCardGrid({ coins }: CryptoCardGridProps) {
           className="pl-9"
           aria-label="Search cryptocurrencies"
         />
-      </div>
+      </motion.div>
 
-      {/* Results */}
+      {/* Results with stagger animation */}
       {filtered.length === 0 ? (
-        <p className="text-center text-muted-foreground py-12">
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-center text-muted-foreground py-12"
+        >
           Tidak ada hasil untuk pencarian ini.
-        </p>
+        </motion.p>
       ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
+        >
           {filtered.map((coin) => (
-            <CryptoCard key={coin.id} coin={coin} />
+            <motion.div
+              key={coin.id}
+              variants={itemVariants}
+              onClick={() => handleCardClick(coin)}
+              className="cursor-pointer"
+            >
+              <CryptoCard coin={coin} />
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       )}
+
+      {/* Modal */}
+      <CoinDetailModal
+        coin={selectedCoin}
+        open={modalOpen}
+        onOpenChange={setModalOpen}
+        onAddToPortfolio={(coin) => {
+          // Ambil data portfolio yang sudah ada
+          const existing = JSON.parse(localStorage.getItem('crypto-tracker-portfolio') || '[]');
+
+          // Cek apakah coin sudah ada di portfolio
+          const exists = existing.some((item: any) => item.coinId === coin.id);
+
+          if (exists) {
+            alert(`${coin.name} sudah ada di portfolio!`);
+            setModalOpen(false);
+            return;
+          }
+
+          // Tanya jumlah yang ingin dibeli
+          const amount = prompt(`Berapa banyak ${coin.name} yang ingin Anda beli?`, '1');
+
+          if (amount && !isNaN(Number(amount)) && Number(amount) > 0) {
+            const newEntry = {
+              id: crypto.randomUUID(),
+              coinId: coin.id,
+              coinName: coin.name,
+              coinSymbol: coin.symbol.toUpperCase(),
+              amount: Number(amount),
+              buyPrice: coin.current_price,
+            };
+
+            existing.push(newEntry);
+            localStorage.setItem('crypto-tracker-portfolio', JSON.stringify(existing));
+
+            alert(`${coin.name} berhasil ditambahkan ke portfolio!`);
+            setModalOpen(false);
+          } else if (amount !== null) {
+            alert('Jumlah tidak valid!');
+          }
+        }}
+      />
     </div>
   );
 }

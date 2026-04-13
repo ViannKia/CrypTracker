@@ -1,6 +1,9 @@
+'use client';
+
+import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { MiniChart } from '@/components/mini-chart';
+import { Card, CardContent } from '@/components/ui/card';
+import { ArrowUp, ArrowDown } from 'lucide-react';
 import type { CoinMarket } from '@/lib/types';
 
 interface CryptoCardProps {
@@ -8,49 +11,49 @@ interface CryptoCardProps {
 }
 
 export function CryptoCard({ coin }: CryptoCardProps) {
-  const isPositive = coin.price_change_percentage_24h >= 0;
+  const priceChange = coin.price_change_percentage_24h ?? 0;
+  const isPositive = priceChange >= 0;
   const changeColor = isPositive ? 'text-green-500' : 'text-red-500';
+  const changeIcon = isPositive ? <ArrowUp className="h-3 w-3" /> : <ArrowDown className="h-3 w-3" />;
   const changeSign = isPositive ? '+' : '';
 
-  const sparklinePrices = coin.sparkline_in_7d?.price ?? [];
-  const sparklineIsPositive =
-    sparklinePrices.length >= 2
-      ? sparklinePrices[sparklinePrices.length - 1] >= sparklinePrices[0]
-      : isPositive;
-
   return (
-    <Card className="hover:shadow-md transition-shadow">
-      <CardHeader className="pb-2">
-        <div className="flex items-center gap-3">
-          <Image
-            src={coin.image}
-            alt={coin.name}
-            width={32}
-            height={32}
-            className="rounded-full"
-          />
-          <div>
-            <p className="font-semibold text-sm leading-tight">{coin.name}</p>
-            <p className="text-xs text-muted-foreground uppercase">
-              {coin.symbol}
-            </p>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ scale: 1.02, y: -2 }}
+      transition={{ duration: 0.2 }}
+    >
+      <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+        <CardContent className="p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Image
+                src={coin.image}
+                alt={coin.name}
+                width={32}
+                height={32}
+                className="rounded-full"
+              />
+              <div>
+                <p className="font-semibold text-sm">{coin.name}</p>
+                <p className="text-xs text-muted-foreground uppercase">
+                  {coin.symbol}
+                </p>
+              </div>
+            </div>
+            <div className="text-right">
+              <p className="font-bold text-sm">
+                ${coin.current_price?.toLocaleString()}
+              </p>
+              <p className={`text-xs font-medium ${changeColor} flex items-center gap-0.5 justify-end`}>
+                {changeIcon}
+                {changeSign}{priceChange.toFixed(2)}%
+              </p>
+            </div>
           </div>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <p className="text-lg font-bold">
-          ${coin.current_price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-        </p>
-        <p className={`text-sm font-medium ${changeColor}`}>
-          {changeSign}
-          {coin.price_change_percentage_24h.toFixed(2)}%
-        </p>
-        {sparklinePrices.length > 0 && (
-          <div className="mt-2">
-            <MiniChart prices={sparklinePrices} isPositive={sparklineIsPositive} />
-          </div>
-        )}
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 }

@@ -6,6 +6,16 @@ export interface CoinMarket {
   current_price: number;
   price_change_percentage_24h: number;
   market_cap: number;
+  market_cap_rank?: number;
+  total_volume?: number;
+  circulating_supply?: number;
+  total_supply?: number;
+  max_supply?: number;
+  fully_diluted_valuation?: number;
+  ath?: number;
+  ath_date?: string;
+  atl?: number;
+  atl_date?: string;
   sparkline_in_7d: {
     price: number[];
   };
